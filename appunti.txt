@@ -1,0 +1,177 @@
+while(s!=' '){
+			s = fgetc(fi);			// salvo in buff la prima parte testuale
+			buff[i] = s;
+			i++;
+		}
+
+leggere carattere per carattere, tempo minore di fscanf??
+
+fscanf(fi,"%s ",&buff);
+
+
+
+Vecchio plan, non funzionante :
+
+/* SBAGLIATO
+        while(temp->dist >= start){                                             //O(n)
+
+
+            if(temp->dist == start){
+                temp->flag = 1;
+                break;
+            }
+
+            pre = prec(temp2);                                         //O(log n)
+            if(pre == NULL){
+                if(temp2->dist == start){
+                    temp2->flag = 1;
+                    temp->flag = 1;
+                    break;
+                }
+            }
+
+            if( (pre->tab->max + pre->dist) < temp->dist ){
+                if(temp2->dist == temp->dist){
+                    fprintf(f,"nessun percorso");
+                    ripulisci_flag(rad);                               //O(n)
+                    return 0;
+                }
+                temp->flag = 1;
+                temp = temp2;
+            }
+            else{
+                temp2 = pre;
+            }
+
+        }
+
+        */
+
+
+
+
+
+
+
+
+
+Percorso invero ma che prende le stazioni con distanza maggiori:
+
+stazione *sx,*dx;
+        stazione *fine = search_station(rad,start);
+
+        sx = search_station(rad,end);
+
+        while(sx->dist != start){
+            dx = fine;
+
+            while( ( dx->dist - dx->tab->max ) > sx->dist)
+                dx = prec(dx);                                         //O(log n)
+
+            if(sx == dx){
+                fprintf(f,"nessun percorso");
+                    ripulisci_flag(rad);                               //O(n)
+                    return 0;
+            }
+            sx->flag = 1;
+            sx = dx;
+        }
+
+        fprintf(f,"%d",fine->dist);
+        stampa_flag_inv(rad,f);
+        ripulisci_flag(rad);
+
+
+
+Percorso inverso sbagliato
+
+stazione *sx,*dx;
+        stazione *fine = search_station(rad,start);
+
+        sx = search_station(rad,end);
+
+        while(sx->dist != start){
+            dx = fine;
+
+            while( ( dx->dist - dx->tab->max ) > sx->dist)
+                dx = prec(dx);                                         //O(log n)
+
+            if(sx == dx){
+                fprintf(f,"nessun percorso");
+                    ripulisci_flag(rad);                               //O(n)
+                    return 0;
+            }
+            sx->flag = 1;
+            sx = dx;
+        }
+
+        fprintf(f,"%d",fine->dist);
+        stampa_flag_inv(rad,f);
+        ripulisci_flag(rad);
+
+
+
+Percorso diretto base:
+
+stazione *sx,*dx;
+        stazione *inizio = search_station(rad,start);
+
+        dx = search_station(rad,end);
+
+        while(dx->dist != start){
+            sx = inizio;
+
+            while( (sx->tab->max + sx->dist) < dx->dist)
+                sx = succ(sx);                                         //O(log n)
+
+            if(sx == dx){
+                fprintf(f,"nessun percorso");
+                    ripulisci_flag(rad);                               //O(n)
+                    return 0;
+            }
+            dx->flag = 1;
+            dx = sx;
+        }
+
+        fprintf(f,"%d",inizio->dist);
+        stampa_flag(rad,f);
+
+
+BFS sbagliato :
+
+
+/*
+            do{
+                temp = prec(temp);
+            }while(temp->dist != end && (u->dist - u->tab->max) <= temp->dist);
+            if(temp->dist == end){
+                temp->pi = u;
+                found = 1;
+                break;
+            }
+            temp = succ(temp);
+            */
+
+
+            /*
+void stampa_flag(stazione *root,FILE *f){
+    if(root != NULL){
+        stampa_flag(root->left,f);
+        if(root->flag == 1)
+            fprintf(f," %d",root->dist);
+        stampa_flag(root->right,f);
+    }
+}*/
+
+
+stazione *prec(stazione *x){
+    stazione *y;
+    if(x->left != NULL)
+        return max(x->left);
+    y = x->p;
+    while(y!=NULL && x == y->left){
+        x = y;
+        y = y->p;
+    }
+    return y;
+}
