@@ -8,7 +8,7 @@ The basic idea was to implement a time and space-efficient algorithm to calculat
 
 One easy example is this: 
 
-![image](https://github.com/LucaLeonx/API-project/tree/main/assets/path.png)
+![](/assets/path.png)
 
 here the correct path from 10 to 60 is:
 - 10->20->40->60
